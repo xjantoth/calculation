@@ -116,7 +116,7 @@ font-weight:normal;
 
                 {% endfor %}
 
-            Môže obsahovať:
+            . Môže obsahovať:
              {% for key,value in items.iterrows() %}
                   {% if value['can_have'] != ' ' %}
                     {{ value['can_have'] }},

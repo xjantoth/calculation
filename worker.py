@@ -184,12 +184,12 @@ x_francuzka_bageta.render_with_jinja()
 # x_moriavia_bageta
 x_moriavia_bageta = FoodLabel(sheet_name='x_moriavia_bageta',
                               html_file='outputs/x_moriavia_bageta.html',
-                              product_name='Bageta Moriavia')
+                              product_name='Bageta Moravia')
 x_moriavia_bageta.render_with_jinja()
 # x_sunkova_bageta
 x_sunkova_bageta = FoodLabel(sheet_name='x_sunkova_bageta',
                              html_file='outputs/x_sunkova_bageta.html',
-                             product_name='Šunková bageta')
+                             product_name='Šunková Bageta')
 x_sunkova_bageta.render_with_jinja()
 # x_gyros_bageta
 x_gyros_bageta = FoodLabel(sheet_name='x_gyros_bageta',
