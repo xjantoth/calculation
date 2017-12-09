@@ -179,7 +179,7 @@ x_zemiakovy_salat.render_with_jinja()
 # x_francuzka_bageta
 x_francuzka_bageta = FoodLabel(sheet_name='x_francuzka_bageta',
                                html_file='outputs/x_francuzka_bageta.html',
-                               product_name='Francúzka bageta')
+                               product_name='Francúzska bageta')
 x_francuzka_bageta.render_with_jinja()
 # x_moriavia_bageta
 x_moriavia_bageta = FoodLabel(sheet_name='x_moriavia_bageta',
