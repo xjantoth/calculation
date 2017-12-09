@@ -109,12 +109,19 @@ font-weight:normal;
             <br>
             <b>Alergény:</b>
               {% for key,value in items.iterrows() %}
-                      {{ value['alergens'] }}
+
+                  {% if value['alergens'] != ' ' %}
+                      {{ value['alergens'] }},
+                  {% endif %}
+
                 {% endfor %}
 
             Môže obsahovať:
              {% for key,value in items.iterrows() %}
-                 {{ value['can_have'] }}
+                  {% if value['can_have'] != ' ' %}
+                    {{ value['can_have'] }},
+                  {% endif %}
+
              {% endfor %}
 .
             <b><br>GMO: </b>výrobok neobsahuje GMO
@@ -133,7 +140,7 @@ font-weight:normal;
             Letisko Košice, 04175 Košice; 
             prevádzka: Pri bitúnku 2, Košice. 
             Dátum spotreby je číslo šarže. 
-            Množstvo/Hmotnosť: viď. na obale.
+            Množstvo/Hmotnosť: {{ total_product_weight }}.
             Krajina pôvodu: Slovenská republika. 
             Balené v ochrannej atmosfére. 
             Skladujte v chlade pri teplote:  2-4°C. 

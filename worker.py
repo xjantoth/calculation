@@ -158,7 +158,7 @@ class FoodLabel(object):
                     en_value=en_value_dict,
                     kj=kj,
                     kcal=kcal,
-                    total_product_weight=product_weight,
+                    total_product_weight=product_weight - 10 ,
                     product_name=self.product_name)
 
     def render_with_jinja(self):
@@ -179,22 +179,22 @@ x_zemiakovy_salat.render_with_jinja()
 # x_francuzka_bageta
 x_francuzka_bageta = FoodLabel(sheet_name='x_francuzka_bageta',
                                html_file='outputs/x_francuzka_bageta.html',
-                               product_name='x_francuzka_bageta')
+                               product_name='Francúzka bageta')
 x_francuzka_bageta.render_with_jinja()
 # x_moriavia_bageta
 x_moriavia_bageta = FoodLabel(sheet_name='x_moriavia_bageta',
                               html_file='outputs/x_moriavia_bageta.html',
-                              product_name='x_moriavia_bageta')
+                              product_name='Bageta Moriavia')
 x_moriavia_bageta.render_with_jinja()
 # x_sunkova_bageta
 x_sunkova_bageta = FoodLabel(sheet_name='x_sunkova_bageta',
                              html_file='outputs/x_sunkova_bageta.html',
-                             product_name='x_sunkova_bageta')
+                             product_name='Šunková bageta')
 x_sunkova_bageta.render_with_jinja()
 # x_gyros_bageta
 x_gyros_bageta = FoodLabel(sheet_name='x_gyros_bageta',
                            html_file='outputs/x_gyros_bageta.html',
-                           product_name='x_gyros_bageta')
+                           product_name='Bageta Gyros')
 x_gyros_bageta.render_with_jinja()
 # x_golden_nugets
 x_golden_nugets = FoodLabel(sheet_name='x_golden_nugets',
@@ -204,42 +204,42 @@ x_golden_nugets.render_with_jinja()
 # x_stripsy_1
 x_stripsy_1 = FoodLabel(sheet_name='x_stripsy_1',
                         html_file='outputs/x_stripsy_1.html',
-                        product_name='x_stripsy_1')
+                        product_name='Bageta Kuracie Stripsy')
 x_stripsy_1.render_with_jinja()
 # x_labuznik_1
 x_labuznik_1 = FoodLabel(sheet_name='x_labuznik_1',
                          html_file='outputs/x_labuznik_1.html',
-                         product_name='x_labuznik_1')
+                         product_name='Bageta Labužník I')
 x_labuznik_1.render_with_jinja()
 # x_labuznik_2
 x_labuznik_2 = FoodLabel(sheet_name='x_labuznik_2',
                          html_file='outputs/x_labuznik_2.html',
-                         product_name='x_labuznik_2')
+                         product_name='Bageta Labužník II')
 x_labuznik_2.render_with_jinja()
 # x_zivanska_bageta_1
 x_zivanska_bageta_1 = FoodLabel(sheet_name='x_zivanska_bageta_1',
                                 html_file='outputs/x_zivanska_bageta_1.html',
-                                product_name='x_zivanska_bageta_1')
+                                product_name='Živánska Bageta I')
 x_zivanska_bageta_1.render_with_jinja()
 # x_zivanska_bageta_2
 x_zivanska_bageta_2 = FoodLabel(sheet_name='x_zivanska_bageta_2',
                                 html_file='outputs/x_zivanska_bageta_2.html',
-                                product_name='x_zivanska_bageta_2')
+                                product_name='Živánska Bageta II')
 x_zivanska_bageta_2.render_with_jinja()
 # x_debrecinska_bageta
 x_debrecinska_bageta = FoodLabel(sheet_name='x_debrecinska_bageta',
                                  html_file='outputs/x_debrecinska_bageta.html',
-                                 product_name='x_debrecinska_bageta')
+                                 product_name='Debrecínska Bageta')
 x_debrecinska_bageta.render_with_jinja()
 # x_maja_bageta
 x_maja_bageta = FoodLabel(sheet_name='x_maja_bageta',
                           html_file='outputs/x_maja_bageta.html',
-                          product_name='x_maja_bageta')
+                          product_name='Bageta Maja')
 x_maja_bageta.render_with_jinja()
 # x_bavorska_bageta
 x_bavorska_bageta = FoodLabel(sheet_name='x_bavorska_bageta',
                               html_file='outputs/x_bavorska_bageta.html',
-                              product_name='x_bavorska_bageta')
+                              product_name='Bavorská Bageta')
 x_bavorska_bageta.render_with_jinja()
 
 
