@@ -242,6 +242,46 @@ x_bavorska_bageta = FoodLabel(sheet_name='x_bavorska_bageta',
                               product_name='Bavorská Bageta')
 x_bavorska_bageta.render_with_jinja()
 
+'''
+*******************************************
+*   25/0202018
+*******************************************
+'''
+_t_bazalkove_pesto = FoodLabel(sheet_name='_t_bazalkove_pesto',
+                              html_file='outputs/_t_bazalkove_pesto.html',
+                              product_name='Bavorská Bageta')
+_t_bazalkove_pesto.render_with_jinja()
+
+
+t_salat_caesar = FoodLabel(sheet_name='t_salat_caesar',
+                              html_file='outputs/t_salat_caesar.html',
+                              product_name='Ceaesar Šalát')
+t_salat_caesar.render_with_jinja()
+
+t_salat_s_pecenou_cviklou = FoodLabel(sheet_name='t_salat_s_pecenou_cviklou',
+                              html_file='outputs/t_salat_s_pecenou_cviklou.html',
+                              product_name='Šalát s pečenou cviklou')
+t_salat_s_pecenou_cviklou.render_with_jinja()
+
+t_salat_cestovinovy_s_kuracim = FoodLabel(sheet_name='t_salat_cestovinovy_s_kuracim',
+                              html_file='outputs/t_salat_cestovinovy_s_kuracim.html',
+                              product_name='Cestovinový šalát s kuracím mäsom a zeleninou')
+t_salat_cestovinovy_s_kuracim.render_with_jinja()
+
+
+t_salat_cous_cous = FoodLabel(sheet_name='t_salat_cous_cous',
+                              html_file='outputs/t_salat_cous_cous.html',
+                              product_name='Cous cous šalát s kuracím mäsom a zeleninou')
+t_salat_cous_cous.render_with_jinja()
+
+
+t_salat_exoticky_mix = FoodLabel(sheet_name='t_salat_exoticky_mix',
+                              html_file='outputs/t_salat_exoticky_mix.html',
+                              product_name='Šalát exotický mix')
+t_salat_exoticky_mix.render_with_jinja()
+
+
+
 
 
 
