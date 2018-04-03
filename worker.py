@@ -1,7 +1,5 @@
 import pandas as pd
 from jinja2 import Template, Environment, FileSystemLoader
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
 
 
 class FoodLabel(object):
@@ -280,12 +278,67 @@ t_salat_exoticky_mix = FoodLabel(sheet_name='t_salat_exoticky_mix',
                               product_name='Šalát exotický mix')
 t_salat_exoticky_mix.render_with_jinja()
 
+'''
+03/April/2018
+'''
 
+k_debrecinka_psenicna = FoodLabel(sheet_name='k_debrecinka_psenicna',
+                                  html_file='outputs/k_debrecinka_psenicna.html',
+                                  product_name='Debrecínka pšeničná')
+k_debrecinka_psenicna.render_with_jinja()
+k_debrecinka_psenicna_mala = FoodLabel(sheet_name='k_debrecinka_psenicna_mala',
+                                       html_file='outputs/k_debrecinka_psenicna_mala.html',
+                                       product_name='Debrecínka pšeničná malá')
+k_debrecinka_psenicna_mala.render_with_jinja()
+k_francuzka_psenicna = FoodLabel(sheet_name='k_francuzka_psenicna',
+                                 html_file='outputs/k_francuzka_psenicna.html',
+                                 product_name='Francúzka pšeničná')
+k_francuzka_psenicna.render_with_jinja()
+k_gyros_psenicna = FoodLabel(sheet_name='k_gyros_psenicna',
+                             html_file='outputs/k_gyros_psenicna.html',
+                             product_name='Gyros pšeničná')
+k_gyros_psenicna.render_with_jinja()
+k_gyros_psenicna_mala = FoodLabel(sheet_name='k_gyros_psenicna_mala',
+                                  html_file='outputs/k_gyros_psenicna_mala.html',
+                                  product_name='Gyros pšeničná malá')
+k_gyros_psenicna_mala.render_with_jinja()
+k_labuznik_spaldova = FoodLabel(sheet_name='k_labuznik_spaldova',
+                                html_file='outputs/k_labuznik_spaldova.html',
+                                product_name='Labužník špaldová')
+k_labuznik_spaldova.render_with_jinja()
+k_morcacia_spaldova = FoodLabel(sheet_name='k_morcacia_spaldova',
+                                html_file='outputs/k_morcacia_spaldova.html',
+                                product_name='Morčacia špaldová')
+k_morcacia_spaldova.render_with_jinja()
+k_moravia_staroceska = FoodLabel(sheet_name='k_moravia_staroceska',
+                                 html_file='outputs/k_moravia_staroceska.html',
+                                 product_name='Moravia staročeská')
+k_moravia_staroceska.render_with_jinja()
+k_kuracie_stripsy_psenicna = FoodLabel(sheet_name='k_kuracie_stripsy_psenicna',
+                                       html_file='outputs/k_kuracie_stripsy_psenicna.html',
+                                       product_name='Kuracie stripsy pšeničná')
+k_kuracie_stripsy_psenicna.render_with_jinja()
+k_kuracie_stripsy_psenicna_mala = FoodLabel(sheet_name='k_kuracie_stripsy_psenicna_mala',
+                                            html_file='outputs/k_kuracie_stripsy_psenicna_mala.html',
+                                            product_name='Kuracie stripsy pšeničná malá')
+k_kuracie_stripsy_psenicna_mala.render_with_jinja()
+k_sunkova_spaldova = FoodLabel(sheet_name='k_sunkova_spaldova',
+                               html_file='outputs/k_sunkova_spaldova.html',
+                               product_name='Šunková špaldová')
+k_sunkova_spaldova.render_with_jinja()
+k_sunkova_psenicna_mala = FoodLabel(sheet_name='k_sunkova_psenicna_mala',
+                                    html_file='outputs/k_sunkova_psenicna_mala.html',
+                                    product_name='Šunková pšeničná')
+k_sunkova_psenicna_mala.render_with_jinja()
+k_farmarska_psenicna = FoodLabel(sheet_name='k_farmarska_psenicna',
+                                 html_file='outputs/k_farmarska_psenicna.html',
+                                 product_name='Farmárska pšeničná')
+k_farmarska_psenicna.render_with_jinja()
 
-
-
-
-
+k_bavaria_staroceska = FoodLabel(sheet_name='k_bavaria_staroceska',
+                                 html_file='outputs/k_bavaria_staroceska.html',
+                                 product_name='Bavaria staročeská')
+k_bavaria_staroceska.render_with_jinja()
 
 
 

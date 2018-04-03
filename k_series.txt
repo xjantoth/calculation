@@ -1,0 +1,14 @@
+k_debrecinka_psenicna
+k_debrecinka_psenicna_mala
+k_francuzka_psenicna
+k_gyros_psenicna
+k_gyros_psenicna_mala
+k_labuznik_spaldova
+k_morcacia_spaldova
+k_moravia_staroceska
+k_kuracie_stripsy_psenicna
+k_kuracie_stripsy_psenicna_mala
+k_sunkova_spaldova
+k_sunkova_psenicna_mala
+k_farmarska_psenicna
+k_bavaria_staroceska
