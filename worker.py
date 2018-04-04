@@ -340,8 +340,10 @@ k_bavaria_staroceska = FoodLabel(sheet_name='k_bavaria_staroceska',
                                  product_name='Bavaria staročeská')
 k_bavaria_staroceska.render_with_jinja()
 
-
-
+k_syrova_grahamova = FoodLabel(sheet_name='k_syrova_grahamova',
+                                 html_file='outputs/k_syrova_grahamova.html',
+                                 product_name='Syrová grahamová')
+k_syrova_grahamova.render_with_jinja()
 
 
 
