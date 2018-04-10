@@ -102,7 +102,7 @@ font-weight:normal;
             <b><u>Zloženie:</u></b><br>
 
                 {% for key,value in items.iterrows() %}
-                      <b>{{ value['_products'] }}: </b> {{ value['desc_from_library'] }}
+                      <b>{{ value['_products'] }} {{ value['percentage'] }}%: </b> {{ value['desc_from_library'] }}
                 {% endfor %}
 
 

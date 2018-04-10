@@ -32,6 +32,7 @@ class FoodLabel(object):
                  product_sheet_name='products',
                  template_dir='templates',
                  html_file='main.html',
+                 product_file='product.tpl',
                  product_name='<Produkt>'):
 
         self.hundred_grams = hundred_grams
@@ -40,10 +41,12 @@ class FoodLabel(object):
         self.product_sheet_name = product_sheet_name
         self.template_dir = template_dir
         self.html_file = html_file
+        self.product_file = product_file
         self.product_name = product_name
 
         self.jenv = Environment(loader=FileSystemLoader(self.template_dir))
         self.template = self.jenv.get_template('main.tpl')
+        # self.product = self.jenv.get_template(self.product_file)
 
     def load_products_from_file(self, _file_name=None, _sheet_name=None):
         _file_name = _file_name or self.xlsx_filename
@@ -74,6 +77,8 @@ class FoodLabel(object):
         product_list_data = product_list
         :return:
         """
+        format_calculus = lambda x: '{0:.1f}'.format(round(float(x), 1))
+        format_repace = lambda x: str(x).replace('.', ',')
         working_frame, product_description, product_list_data = \
             self.get_products_from_file()
 
@@ -99,8 +104,9 @@ class FoodLabel(object):
 
         # working_frame['desc_from_library'] = working_frame['_products'].map(assign_description)
         working_frame['desc_from_library'] = working_frame['desc']
-
         product_weight = working_frame['weight'].sum()
+        working_frame['percentage'] = ((working_frame['weight'] / product_weight) * 100).map(format_calculus)
+        working_frame['percentage'] = working_frame['percentage'].map(format_repace)
 
         for _nr in FoodLabel._normovane:
             _soa = working_frame[_nr].sum()
@@ -110,6 +116,7 @@ class FoodLabel(object):
                 self.hundred_grams * working_frame[_nr].sum() / product_weight
             _x_hundred_grams.append(_tmp_hundred_g)
 
+
         calculated_product_values = pd.DataFrame()
         calculated_product_values['name'] = \
             pd.Series(FoodLabel._product_attributes)
@@ -117,7 +124,7 @@ class FoodLabel(object):
             _sum_of_attributes)
 
         calculated_product_values['per 100g'] = pd.Series(_x_hundred_grams)
-        format_calculus = lambda x: '{0:.1f}'.format(round(float(x), 1))
+        # format_calculus = lambda x: '{0:.1f}'.format(round(float(x), 1))
         calculated_product_values['per 100g'] = \
             calculated_product_values['per 100g'].map(format_calculus)
 
@@ -131,6 +138,7 @@ class FoodLabel(object):
                     - protein
 
                 '''
+        # calculated_product_values['percentage'] = (working_frame['weight'] / product_weight) * 100
         temp_var = calculated_product_values
         temp_var = temp_var.set_index("name")
 
@@ -143,7 +151,7 @@ class FoodLabel(object):
         kj = str(kj).replace('.', ',')
         kcal = str(kcal).replace('.', ',')
 
-        format_repace = lambda x: str(x).replace('.', ',')
+
         calculated_product_values['per 100g'] = \
             calculated_product_values['per 100g'].map(format_repace)
 
@@ -152,11 +160,14 @@ class FoodLabel(object):
                      calculated_product_values['per 100g']))
 
         print(product_weight)
+        # print(((working_frame['weight'] / product_weight) * 100).sum())
+        # print(((working_frame['weight'] / product_weight) * 100))
+        # print(working_frame)
         return dict(items=working_frame,
                     en_value=en_value_dict,
                     kj=kj,
                     kcal=kcal,
-                    total_product_weight=product_weight - 10 ,
+                    total_product_weight=product_weight - 10,
                     product_name=self.product_name)
 
     def render_with_jinja(self):
@@ -164,186 +175,302 @@ class FoodLabel(object):
         _output = self.template.render(**content)
         with(open(self.html_file, encoding='utf8', mode='w')) as f:
             f.write(_output)
-        return _output
-
-
-# x_francuzka_bageta
-x_zemiakovy_salat = FoodLabel(sheet_name='x_zemiakovy_salat',
-                               html_file = 'outputs/x_zemiakovy_salat.html',
-                               product_name = 'x_zemiakovy_salat')
-x_zemiakovy_salat.render_with_jinja()
-
-
-# x_francuzka_bageta
-x_francuzka_bageta = FoodLabel(sheet_name='x_francuzka_bageta',
-                               html_file='outputs/x_francuzka_bageta.html',
-                               product_name='Francúzska bageta')
-x_francuzka_bageta.render_with_jinja()
-# x_moriavia_bageta
-x_moriavia_bageta = FoodLabel(sheet_name='x_moriavia_bageta',
-                              html_file='outputs/x_moriavia_bageta.html',
-                              product_name='Bageta Moravia')
-x_moriavia_bageta.render_with_jinja()
-# x_sunkova_bageta
-x_sunkova_bageta = FoodLabel(sheet_name='x_sunkova_bageta',
-                             html_file='outputs/x_sunkova_bageta.html',
-                             product_name='Šunková Bageta')
-x_sunkova_bageta.render_with_jinja()
-# x_gyros_bageta
-x_gyros_bageta = FoodLabel(sheet_name='x_gyros_bageta',
-                           html_file='outputs/x_gyros_bageta.html',
-                           product_name='Bageta Gyros')
-x_gyros_bageta.render_with_jinja()
-# x_golden_nugets
-x_golden_nugets = FoodLabel(sheet_name='x_golden_nugets',
-                            html_file='outputs/x_golden_nugets.html',
-                            product_name='Golden Nuggets')
-x_golden_nugets.render_with_jinja()
-# x_stripsy_1
-x_stripsy_1 = FoodLabel(sheet_name='x_stripsy_1',
-                        html_file='outputs/x_stripsy_1.html',
-                        product_name='Bageta Kuracie Stripsy')
-x_stripsy_1.render_with_jinja()
-# x_labuznik_1
-x_labuznik_1 = FoodLabel(sheet_name='x_labuznik_1',
-                         html_file='outputs/x_labuznik_1.html',
-                         product_name='Bageta Labužník I')
-x_labuznik_1.render_with_jinja()
-# x_labuznik_2
-x_labuznik_2 = FoodLabel(sheet_name='x_labuznik_2',
-                         html_file='outputs/x_labuznik_2.html',
-                         product_name='Bageta Labužník II')
-x_labuznik_2.render_with_jinja()
-# x_zivanska_bageta_1
-x_zivanska_bageta_1 = FoodLabel(sheet_name='x_zivanska_bageta_1',
-                                html_file='outputs/x_zivanska_bageta_1.html',
-                                product_name='Živánska Bageta I')
-x_zivanska_bageta_1.render_with_jinja()
-# x_zivanska_bageta_2
-x_zivanska_bageta_2 = FoodLabel(sheet_name='x_zivanska_bageta_2',
-                                html_file='outputs/x_zivanska_bageta_2.html',
-                                product_name='Živánska Bageta II')
-x_zivanska_bageta_2.render_with_jinja()
-# x_debrecinska_bageta
-x_debrecinska_bageta = FoodLabel(sheet_name='x_debrecinska_bageta',
-                                 html_file='outputs/x_debrecinska_bageta.html',
-                                 product_name='Debrecínska Bageta')
-x_debrecinska_bageta.render_with_jinja()
-# x_maja_bageta
-x_maja_bageta = FoodLabel(sheet_name='x_maja_bageta',
-                          html_file='outputs/x_maja_bageta.html',
-                          product_name='Bageta Maja')
-x_maja_bageta.render_with_jinja()
-# x_bavorska_bageta
-x_bavorska_bageta = FoodLabel(sheet_name='x_bavorska_bageta',
-                              html_file='outputs/x_bavorska_bageta.html',
-                              product_name='Bavorská Bageta')
-x_bavorska_bageta.render_with_jinja()
+        return self.html_file, _output
 
 '''
-*******************************************
-*   25/0202018
-*******************************************
-'''
-_t_bazalkove_pesto = FoodLabel(sheet_name='_t_bazalkove_pesto',
-                              html_file='outputs/_t_bazalkove_pesto.html',
-                              product_name='Bavorská Bageta')
-_t_bazalkove_pesto.render_with_jinja()
-
-
-t_salat_caesar = FoodLabel(sheet_name='t_salat_caesar',
-                              html_file='outputs/t_salat_caesar.html',
-                              product_name='Ceaesar Šalát')
-t_salat_caesar.render_with_jinja()
-
-t_salat_s_pecenou_cviklou = FoodLabel(sheet_name='t_salat_s_pecenou_cviklou',
-                              html_file='outputs/t_salat_s_pecenou_cviklou.html',
-                              product_name='Šalát s pečenou cviklou')
-t_salat_s_pecenou_cviklou.render_with_jinja()
-
-t_salat_cestovinovy_s_kuracim = FoodLabel(sheet_name='t_salat_cestovinovy_s_kuracim',
-                              html_file='outputs/t_salat_cestovinovy_s_kuracim.html',
-                              product_name='Cestovinový šalát s kuracím mäsom a zeleninou')
-t_salat_cestovinovy_s_kuracim.render_with_jinja()
-
-
-t_salat_cous_cous = FoodLabel(sheet_name='t_salat_cous_cous',
-                              html_file='outputs/t_salat_cous_cous.html',
-                              product_name='Cous cous šalát s kuracím mäsom a zeleninou')
-t_salat_cous_cous.render_with_jinja()
-
-
-t_salat_exoticky_mix = FoodLabel(sheet_name='t_salat_exoticky_mix',
-                              html_file='outputs/t_salat_exoticky_mix.html',
-                              product_name='Šalát exotický mix')
-t_salat_exoticky_mix.render_with_jinja()
+Code is starting over here :P)
 
 '''
-03/April/2018
+a_toast_prosciutto = FoodLabel(sheet_name='a_toast_prosciutto',
+                               html_file='outputs/a_toast_prosciutto.html',
+                               product_name='a_toast_prosciutto')
+a_toast_prosciutto.render_with_jinja()
+
+
+a_toast_mozzarella = FoodLabel(sheet_name='a_toast_mozzarella',
+                               html_file='outputs/a_toast_mozzarella.html',
+                               product_name='a_toast_mozzarella')
+a_toast_mozzarella.render_with_jinja()
+
+
+a_toast_sunka_syr = FoodLabel(sheet_name='a_toast_sunka_syr',
+                              html_file='outputs/a_toast_sunka_syr.html',
+                              product_name='a_toast_sunka_syr')
+a_toast_sunka_syr.render_with_jinja()
+
+
+b_salat_mrkvovy = FoodLabel(sheet_name='b_salat_mrkvovy',
+                            html_file='outputs/b_salat_mrkvovy.html',
+                            product_name='b_salat_mrkvovy')
+b_salat_mrkvovy.render_with_jinja()
+
+
+b_salat_civklovy = FoodLabel(sheet_name='b_salat_civklovy',
+                             html_file='outputs/b_salat_civklovy.html',
+                             product_name='b_salat_civklovy')
+b_salat_civklovy.render_with_jinja()
+
+
+b_salat_zelerovy = FoodLabel(sheet_name='b_salat_zelerovy',
+                             html_file='outputs/b_salat_zelerovy.html',
+                             product_name='b_salat_zelerovy')
+b_salat_zelerovy.render_with_jinja()
+
+
+c_salat_capresse = FoodLabel(sheet_name='c_salat_capresse',
+                             html_file='outputs/c_salat_capresse.html',
+                             product_name='c_salat_capresse')
+c_salat_capresse.render_with_jinja()
+
+
+c_protein_box = FoodLabel(sheet_name='c_protein_box',
+                          html_file='outputs/c_protein_box.html',
+                          product_name='c_protein_box')
+c_protein_box.render_with_jinja()
+
+
+c_salat_uhorkovy = FoodLabel(sheet_name='c_salat_uhorkovy',
+                             html_file='outputs/c_salat_uhorkovy.html',
+                             product_name='c_salat_uhorkovy')
+c_salat_uhorkovy.render_with_jinja()
+
+
+c_salat_cicerovo_zeleninovy_01 = FoodLabel(sheet_name='c_salat_cicerovo_zeleninovy_01',
+                                           html_file='outputs/c_salat_cicerovo_zeleninovy_01.html',
+                                           product_name='c_salat_cicerovo_zeleninovy_01')
+c_salat_cicerovo_zeleninovy_01.render_with_jinja()
+
+
+c_salat_cicerovo_zeleninovy_02 = FoodLabel(sheet_name='c_salat_cicerovo_zeleninovy_02',
+                                           html_file='outputs/c_salat_cicerovo_zeleninovy_02.html',
+                                           product_name='c_salat_cicerovo_zeleninovy_02')
+c_salat_cicerovo_zeleninovy_02.render_with_jinja()
+
+
+c_salat_caesar = FoodLabel(sheet_name='c_salat_caesar',
+                           html_file='outputs/c_salat_caesar.html',
+                           product_name='c_salat_caesar')
+c_salat_caesar.render_with_jinja()
+
+
+c_salat_grecky = FoodLabel(sheet_name='c_salat_grecky',
+                           html_file='outputs/c_salat_grecky.html',
+                           product_name='c_salat_grecky')
+c_salat_grecky.render_with_jinja()
+
+
+c_salat_gyros = FoodLabel(sheet_name='c_salat_gyros',
+                          html_file='outputs/c_salat_gyros.html',
+                          product_name='c_salat_gyros')
+c_salat_gyros.render_with_jinja()
+
+
+
+'''
+ENDING
 '''
 
-k_debrecinka_psenicna = FoodLabel(sheet_name='k_debrecinka_psenicna',
-                                  html_file='outputs/k_debrecinka_psenicna.html',
-                                  product_name='Debrecínka pšeničná')
-k_debrecinka_psenicna.render_with_jinja()
-k_debrecinka_psenicna_mala = FoodLabel(sheet_name='k_debrecinka_psenicna_mala',
-                                       html_file='outputs/k_debrecinka_psenicna_mala.html',
-                                       product_name='Debrecínka pšeničná malá')
-k_debrecinka_psenicna_mala.render_with_jinja()
-k_francuzka_psenicna = FoodLabel(sheet_name='k_francuzka_psenicna',
-                                 html_file='outputs/k_francuzka_psenicna.html',
-                                 product_name='Francúzka pšeničná')
-k_francuzka_psenicna.render_with_jinja()
-k_gyros_psenicna = FoodLabel(sheet_name='k_gyros_psenicna',
-                             html_file='outputs/k_gyros_psenicna.html',
-                             product_name='Gyros pšeničná')
-k_gyros_psenicna.render_with_jinja()
-k_gyros_psenicna_mala = FoodLabel(sheet_name='k_gyros_psenicna_mala',
-                                  html_file='outputs/k_gyros_psenicna_mala.html',
-                                  product_name='Gyros pšeničná malá')
-k_gyros_psenicna_mala.render_with_jinja()
-k_labuznik_spaldova = FoodLabel(sheet_name='k_labuznik_spaldova',
-                                html_file='outputs/k_labuznik_spaldova.html',
-                                product_name='Labužník špaldová')
-k_labuznik_spaldova.render_with_jinja()
-k_morcacia_spaldova = FoodLabel(sheet_name='k_morcacia_spaldova',
-                                html_file='outputs/k_morcacia_spaldova.html',
-                                product_name='Morčacia špaldová')
-k_morcacia_spaldova.render_with_jinja()
-k_moravia_staroceska = FoodLabel(sheet_name='k_moravia_staroceska',
-                                 html_file='outputs/k_moravia_staroceska.html',
-                                 product_name='Moravia staročeská')
-k_moravia_staroceska.render_with_jinja()
-k_kuracie_stripsy_psenicna = FoodLabel(sheet_name='k_kuracie_stripsy_psenicna',
-                                       html_file='outputs/k_kuracie_stripsy_psenicna.html',
-                                       product_name='Kuracie stripsy pšeničná')
-k_kuracie_stripsy_psenicna.render_with_jinja()
-k_kuracie_stripsy_psenicna_mala = FoodLabel(sheet_name='k_kuracie_stripsy_psenicna_mala',
-                                            html_file='outputs/k_kuracie_stripsy_psenicna_mala.html',
-                                            product_name='Kuracie stripsy pšeničná malá')
-k_kuracie_stripsy_psenicna_mala.render_with_jinja()
-k_sunkova_spaldova = FoodLabel(sheet_name='k_sunkova_spaldova',
-                               html_file='outputs/k_sunkova_spaldova.html',
-                               product_name='Šunková špaldová')
-k_sunkova_spaldova.render_with_jinja()
-k_sunkova_psenicna_mala = FoodLabel(sheet_name='k_sunkova_psenicna_mala',
-                                    html_file='outputs/k_sunkova_psenicna_mala.html',
-                                    product_name='Šunková pšeničná')
-k_sunkova_psenicna_mala.render_with_jinja()
-k_farmarska_psenicna = FoodLabel(sheet_name='k_farmarska_psenicna',
-                                 html_file='outputs/k_farmarska_psenicna.html',
-                                 product_name='Farmárska pšeničná')
-k_farmarska_psenicna.render_with_jinja()
+# # x_francuzka_bageta
+# x_zemiakovy_salat = FoodLabel(sheet_name='x_zemiakovy_salat',
+#                                html_file = 'outputs/x_zemiakovy_salat.html',
+#                                product_name = 'x_zemiakovy_salat')
+# x_zemiakovy_salat.render_with_jinja()
+#
+#
+# # x_francuzka_bageta
+# x_francuzka_bageta = FoodLabel(sheet_name='x_francuzka_bageta',
+#                                html_file='outputs/x_francuzka_bageta.html',
+#                                product_name='Francúzska bageta')
+# x_francuzka_bageta.render_with_jinja()
+# # x_moriavia_bageta
+# x_moriavia_bageta = FoodLabel(sheet_name='x_moriavia_bageta',
+#                               html_file='outputs/x_moriavia_bageta.html',
+#                               product_name='Bageta Moravia')
+# x_moriavia_bageta.render_with_jinja()
+# # x_sunkova_bageta
+# x_sunkova_bageta = FoodLabel(sheet_name='x_sunkova_bageta',
+#                              html_file='outputs/x_sunkova_bageta.html',
+#                              product_name='Šunková Bageta')
+# x_sunkova_bageta.render_with_jinja()
+# # x_gyros_bageta
+# x_gyros_bageta = FoodLabel(sheet_name='x_gyros_bageta',
+#                            html_file='outputs/x_gyros_bageta.html',
+#                            product_name='Bageta Gyros')
+# x_gyros_bageta.render_with_jinja()
+# # x_golden_nugets
+# x_golden_nugets = FoodLabel(sheet_name='x_golden_nugets',
+#                             html_file='outputs/x_golden_nugets.html',
+#                             product_name='Golden Nuggets')
+# x_golden_nugets.render_with_jinja()
+# # x_stripsy_1
+# x_stripsy_1 = FoodLabel(sheet_name='x_stripsy_1',
+#                         html_file='outputs/x_stripsy_1.html',
+#                         product_name='Bageta Kuracie Stripsy')
+# x_stripsy_1.render_with_jinja()
+# # x_labuznik_1
+# x_labuznik_1 = FoodLabel(sheet_name='x_labuznik_1',
+#                          html_file='outputs/x_labuznik_1.html',
+#                          product_name='Bageta Labužník I')
+# x_labuznik_1.render_with_jinja()
+# # x_labuznik_2
+# x_labuznik_2 = FoodLabel(sheet_name='x_labuznik_2',
+#                          html_file='outputs/x_labuznik_2.html',
+#                          product_name='Bageta Labužník II')
+# x_labuznik_2.render_with_jinja()
+# # x_zivanska_bageta_1
+# x_zivanska_bageta_1 = FoodLabel(sheet_name='x_zivanska_bageta_1',
+#                                 html_file='outputs/x_zivanska_bageta_1.html',
+#                                 product_name='Živánska Bageta I')
+# x_zivanska_bageta_1.render_with_jinja()
+# # x_zivanska_bageta_2
+# x_zivanska_bageta_2 = FoodLabel(sheet_name='x_zivanska_bageta_2',
+#                                 html_file='outputs/x_zivanska_bageta_2.html',
+#                                 product_name='Živánska Bageta II')
+# x_zivanska_bageta_2.render_with_jinja()
+# # x_debrecinska_bageta
+# x_debrecinska_bageta = FoodLabel(sheet_name='x_debrecinska_bageta',
+#                                  html_file='outputs/x_debrecinska_bageta.html',
+#                                  product_name='Debrecínska Bageta')
+# x_debrecinska_bageta.render_with_jinja()
+# # x_maja_bageta
+# x_maja_bageta = FoodLabel(sheet_name='x_maja_bageta',
+#                           html_file='outputs/x_maja_bageta.html',
+#                           product_name='Bageta Maja')
+# x_maja_bageta.render_with_jinja()
+# # x_bavorska_bageta
+# x_bavorska_bageta = FoodLabel(sheet_name='x_bavorska_bageta',
+#                               html_file='outputs/x_bavorska_bageta.html',
+#                               product_name='Bavorská Bageta')
+# x_bavorska_bageta.render_with_jinja()
+#
+# '''
+# *******************************************
+# *   25/0202018
+# *******************************************
+# '''
+# _t_bazalkove_pesto = FoodLabel(sheet_name='_t_bazalkove_pesto',
+#                               html_file='outputs/_t_bazalkove_pesto.html',
+#                               product_name='Bavorská Bageta')
+# _t_bazalkove_pesto.render_with_jinja()
+#
+#
+# t_salat_caesar = FoodLabel(sheet_name='t_salat_caesar',
+#                               html_file='outputs/t_salat_caesar.html',
+#                               product_name='Ceaesar Šalát')
+# t_salat_caesar.render_with_jinja()
+#
+# t_salat_s_pecenou_cviklou = FoodLabel(sheet_name='t_salat_s_pecenou_cviklou',
+#                               html_file='outputs/t_salat_s_pecenou_cviklou.html',
+#                               product_name='Šalát s pečenou cviklou')
+# t_salat_s_pecenou_cviklou.render_with_jinja()
+#
+# t_salat_cestovinovy_s_kuracim = FoodLabel(sheet_name='t_salat_cestovinovy_s_kuracim',
+#                               html_file='outputs/t_salat_cestovinovy_s_kuracim.html',
+#                               product_name='Cestovinový šalát s kuracím mäsom a zeleninou')
+# t_salat_cestovinovy_s_kuracim.render_with_jinja()
+#
+#
+# t_salat_cous_cous = FoodLabel(sheet_name='t_salat_cous_cous',
+#                               html_file='outputs/t_salat_cous_cous.html',
+#                               product_name='Cous cous šalát s kuracím mäsom a zeleninou')
+# t_salat_cous_cous.render_with_jinja()
+#
+#
+# t_salat_exoticky_mix = FoodLabel(sheet_name='t_salat_exoticky_mix',
+#                               html_file='outputs/t_salat_exoticky_mix.html',
+#                               product_name='Šalát exotický mix')
+# t_salat_exoticky_mix.render_with_jinja()
+#
+# '''
+# 03/April/2018
+# '''
+#
+# k_debrecinka_psenicna = FoodLabel(sheet_name='k_debrecinka_psenicna',
+#                                   html_file='outputs/k_debrecinka_psenicna.html',
+#                                   product_name='Debrecínka pšeničná')
+# k_debrecinka_psenicna.render_with_jinja()
+# k_debrecinka_psenicna_mala = FoodLabel(sheet_name='k_debrecinka_psenicna_mala',
+#                                        html_file='outputs/k_debrecinka_psenicna_mala.html',
+#                                        product_name='Debrecínka pšeničná malá')
+# k_debrecinka_psenicna_mala.render_with_jinja()
+# k_francuzka_psenicna = FoodLabel(sheet_name='k_francuzka_psenicna',
+#                                  html_file='outputs/k_francuzka_psenicna.html',
+#                                  product_name='Francúzka pšeničná')
+# k_francuzka_psenicna.render_with_jinja()
+# k_gyros_psenicna = FoodLabel(sheet_name='k_gyros_psenicna',
+#                              html_file='outputs/k_gyros_psenicna.html',
+#                              product_name='Gyros pšeničná')
+# k_gyros_psenicna.render_with_jinja()
+# k_gyros_psenicna_mala = FoodLabel(sheet_name='k_gyros_psenicna_mala',
+#                                   html_file='outputs/k_gyros_psenicna_mala.html',
+#                                   product_name='Gyros pšeničná malá')
+# k_gyros_psenicna_mala.render_with_jinja()
+# k_labuznik_spaldova = FoodLabel(sheet_name='k_labuznik_spaldova',
+#                                 html_file='outputs/k_labuznik_spaldova.html',
+#                                 product_name='Labužník špaldová')
+# k_labuznik_spaldova.render_with_jinja()
+# k_morcacia_spaldova = FoodLabel(sheet_name='k_morcacia_spaldova',
+#                                 html_file='outputs/k_morcacia_spaldova.html',
+#                                 product_name='Morčacia špaldová')
+# k_morcacia_spaldova.render_with_jinja()
+# k_moravia_staroceska = FoodLabel(sheet_name='k_moravia_staroceska',
+#                                  html_file='outputs/k_moravia_staroceska.html',
+#                                  product_name='Moravia staročeská')
+# k_moravia_staroceska.render_with_jinja()
+# k_kuracie_stripsy_psenicna = FoodLabel(sheet_name='k_kuracie_stripsy_psenicna',
+#                                        html_file='outputs/k_kuracie_stripsy_psenicna.html',
+#                                        product_name='Kuracie stripsy pšeničná')
+# k_kuracie_stripsy_psenicna.render_with_jinja()
+# k_kuracie_stripsy_psenicna_mala = FoodLabel(sheet_name='k_kuracie_stripsy_psenicna_mala',
+#                                             html_file='outputs/k_kuracie_stripsy_psenicna_mala.html',
+#                                             product_name='Kuracie stripsy pšeničná malá')
+# k_kuracie_stripsy_psenicna_mala.render_with_jinja()
+# k_sunkova_spaldova = FoodLabel(sheet_name='k_sunkova_spaldova',
+#                                html_file='outputs/k_sunkova_spaldova.html',
+#                                product_name='Šunková špaldová')
+# k_sunkova_spaldova.render_with_jinja()
+# k_sunkova_psenicna_mala = FoodLabel(sheet_name='k_sunkova_psenicna_mala',
+#                                     html_file='outputs/k_sunkova_psenicna_mala.html',
+#                                     product_name='Šunková pšeničná')
+# k_sunkova_psenicna_mala.render_with_jinja()
+# k_farmarska_psenicna = FoodLabel(sheet_name='k_farmarska_psenicna',
+#                                  html_file='outputs/k_farmarska_psenicna.html',
+#                                  product_name='Farmárska pšeničná')
+# k_farmarska_psenicna.render_with_jinja()
+#
+# k_bavaria_staroceska = FoodLabel(sheet_name='k_bavaria_staroceska',
+#                                  html_file='outputs/k_bavaria_staroceska.html',
+#                                  product_name='Bavaria staročeská')
+# k_bavaria_staroceska.render_with_jinja()
+#
+# k_syrova_grahamova = FoodLabel(sheet_name='k_syrova_grahamova',
+#                                  html_file='outputs/k_syrova_grahamova.html',
+#                                  product_name='Syrová grahamová')
+# k_syrova_grahamova.render_with_jinja()
+#
+#
 
-k_bavaria_staroceska = FoodLabel(sheet_name='k_bavaria_staroceska',
-                                 html_file='outputs/k_bavaria_staroceska.html',
-                                 product_name='Bavaria staročeská')
-k_bavaria_staroceska.render_with_jinja()
 
-k_syrova_grahamova = FoodLabel(sheet_name='k_syrova_grahamova',
-                                 html_file='outputs/k_syrova_grahamova.html',
-                                 product_name='Syrová grahamová')
-k_syrova_grahamova.render_with_jinja()
+# a_toast_prosciutto
+# a_toast_mozzarella
+# a_toast_sunka_syr
+# b_salat_mrkvovy
+# b_salat_civklovy
+# b_salat_zelerovy
+# c_salat_capresse
+# c_protein_box
+# c_salat_uhorkovy
+# c_salat_cicerovo_zeleninovy_01
+# c_salat_cicerovo_zeleninovy_02
+# c_salat_caesar
+# c_salat_grécky
+# c_salat_gyros
+
+
+
+
+
+
 
 
 
