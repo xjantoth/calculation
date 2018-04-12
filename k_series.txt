@@ -12,6 +12,7 @@
 #k_sunkova_psenicna_mala
 #k_farmarska_psenicna
 #k_bavaria_staroceska
+k_vegetarianska_staroceska
 a_toast_prosciutto
 a_toast_mozzarella
 a_toast_sunka_syr
@@ -26,3 +27,5 @@ c_salat_cicerovo_zeleninovy_02
 c_salat_caesar
 c_salat_grecky
 c_salat_gyros
+d_TORRO
+d_salat_zahradny_mix

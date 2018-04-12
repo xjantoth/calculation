@@ -181,6 +181,12 @@ class FoodLabel(object):
 Code is starting over here :P)
 
 '''
+k_vegetarianska_staroceska = FoodLabel(sheet_name='k_vegetarianska_staroceska',
+                                       html_file='outputs/k_vegetarianska_staroceska.html',
+                                       product_name='k_vegetarianska_staroceska')
+k_vegetarianska_staroceska.render_with_jinja()
+
+
 a_toast_prosciutto = FoodLabel(sheet_name='a_toast_prosciutto',
                                html_file='outputs/a_toast_prosciutto.html',
                                product_name='a_toast_prosciutto')
@@ -264,7 +270,16 @@ c_salat_gyros = FoodLabel(sheet_name='c_salat_gyros',
                           product_name='c_salat_gyros')
 c_salat_gyros.render_with_jinja()
 
+d_TORRO = FoodLabel(sheet_name='d_TORRO',
+                    html_file='outputs/d_TORRO.html',
+                    product_name='d_TORRO')
+d_TORRO.render_with_jinja()
 
+
+d_salat_zahradny_mix = FoodLabel(sheet_name='d_salat_zahradny_mix',
+                                 html_file='outputs/d_salat_zahradny_mix.html',
+                                 product_name='d_salat_zahradny_mix')
+d_salat_zahradny_mix.render_with_jinja()
 
 '''
 ENDING
