@@ -1,2 +1,63 @@
-.idea/*
-venv
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+nvenv/
+env/
+
+# Environment variables
+*.env
+.env.*
+
+# Flask instance and configuration files
+instance/
+config.py
+
+# Logs
+*.log
+logs/
+
+# Database files
+*.sqlite3
+*.db
+
+# Compiled files
+*.so
+
+# IDE and editor-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test coverage and reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache/
+
+# Static and uploaded files
+staticfiles/
+media/
+uploads/
+
+# Dependencies
+*.egg-info/
+*.egg
+dist/
+build/
+pip-wheel-metadata/
+
+# Docker-related
+docker-compose.override.yml
+*.dockerignore
+
+# Other OS files
+.DS_Store
+Thumbs.db
+
