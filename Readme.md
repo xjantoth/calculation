@@ -33,3 +33,16 @@ storage-component.googleapis.com    Cloud Storage
 storage.googleapis.com              Cloud Storage API
 
 ```
+
+
+# How to deplou cloud function
+
+```bash
+gcloud functions deploy nutrition \
+  --entry-point main\
+  --region europe-west3 \
+  --runtime python312 \
+  --trigger-http \
+  --allow-unauthenticated
+
+```
